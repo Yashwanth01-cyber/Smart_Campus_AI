@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>College Bus Navigation</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+    <style>
+        body { margin: 0; font-family: Arial; }
+        #map { height: 100vh; width: 100%; }
+        .panel {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+<div class="panel">
+    <b>🚌 College Bus Route</b><br>
+    Green: Student Pickup<br>
+    Red: Traffic Area<br>
+    Blue: Suggested Route
+</div>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    const college = [12.975, 77.605];
+
+    const students = [
+        [12.970, 77.590],
+        [12.968, 77.598],
+        [12.972, 77.602]
+    ];
+
+    const map = L.map('map').setView(college, 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+        .addTo(map);
+
+    // College marker
+    L.marker(college).addTo(map).bindPopup("🏫 College");
+
+    // Student pickup points
+    students.forEach(s => {
+        L.circleMarker(s, {
+            color: 'green',
+            radius: 8
+        }).addTo(map).bindPopup("Student Pickup");
+    });
+
+    // Suggested route (simple demo)
+    L.polyline([
+        students[0],
+        students[1],
+        students[2],
+        college
+    ], {
+        color: 'blue',
+        weight: 4
+    }).addTo(map);
+</script>
+
+</body>
+</html>

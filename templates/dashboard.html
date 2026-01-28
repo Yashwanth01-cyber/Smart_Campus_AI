@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Campus AI | Dashboard</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    🏫 Smart Campus AI – Admin Dashboard
+</div>
+
+<!-- DASHBOARD CARDS -->
+<div class="dashboard">
+
+    <!-- Attendance -->
+    <a href="/attendance">
+        <div class="card">
+            <i class="fas fa-user-check"></i>
+            <h3>Attendance System</h3>
+            <p>Face recognition based attendance</p>
+            <p id="attendance-status">Status: Loading...</p>
+        </div>
+    </a>
+
+    <!-- Food Waste -->
+    <a href="/food">
+        <div class="card">
+            <i class="fas fa-utensils"></i>
+            <h3>Food Waste Detection</h3>
+            <p>AI powered food waste monitoring</p>
+            <p id="food-status">Status: Loading...</p>
+        </div>
+    </a>
+
+    <a href="/traffic">
+         <div class="card">
+            <i class="fas fa-traffic-light"></i>
+            <h3>Traffic Management</h3>
+            <p>Smart traffic density analysis</p>
+            <p>Status: Live</p>
+         </div>
+    </a>
+
+    <a href="/bus">
+         <div class="card">
+            <i class="fas fa-bus"></i>
+            <h3>Bus Tracking</h3>
+            <p>Live campus bus tracking</p>
+            <p>Status: Live</p>
+         </div>
+    </a>
+
+</div>
+
+<!-- CHART SECTION -->
+<div style="padding:40px;">
+    <h2 style="text-align:center;">📊 Today’s Statistics</h2>
+    <canvas id="statsChart" height="120"></canvas>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center; padding:20px; opacity:0.7;">
+    © 2026 Smart Campus AI | Symposium Project
+</div>
+
+<!-- STATUS FETCH SCRIPT -->
+<script>
+fetch('/status')
+.then(response => response.json())
+.then(data => {
+    document.getElementById("attendance-status").innerText =
+        "Status: " + data.attendance_system + " | Faces: " + data.faces_detected;
+
+    document.getElementById("food-status").innerText =
+        "Status: " + data.food_waste_status;
+});
+</script>
+
+<!-- CHART SCRIPT -->
+<script>
+const ctx = document.getElementById('statsChart');
+
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Attendance Marked', 'Food Waste Events'],
+        datasets: [{
+            label: 'Today',
+            data: [45, 12],   // dummy data (will become real)
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+
+</body>
+</html>

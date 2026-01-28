@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Traffic Monitoring | Smart Campus AI</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+    <style>
+        body { margin: 0; font-family: Arial; }
+        #map { height: 100vh; width: 100%; }
+        .back {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+<div class="back">
+    <a href="/dashboard">⬅ Back to Dashboard</a>
+</div>
+
+<div id="map"></div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    // Campus coordinates (CHANGE THIS)
+    const campus = [12.9716, 77.5946];
+
+    const map = L.map('map').setView(campus, 14);
+
+    // Base map (OpenStreetMap)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    // Simulated traffic layer (FREE DEMO MODE)
+    const trafficData = [
+        { lat: 12.972, lng: 77.595, level: 'high' },
+        { lat: 12.969, lng: 77.593, level: 'medium' },
+        { lat: 12.974, lng: 77.598, level: 'low' }
+    ];
+
+    trafficData.forEach(t => {
+        let color = t.level === 'high' ? 'red' :
+                    t.level === 'medium' ? 'orange' : 'green';
+
+        L.circle([t.lat, t.lng], {
+            color: color,
+            radius: 200
+        }).addTo(map)
+        .bindPopup(`Traffic: ${t.level.toUpperCase()}`);
+    });
+</script>
+
+</body>
+</html>
