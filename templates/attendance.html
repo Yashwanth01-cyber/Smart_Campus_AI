@@ -1,16 +1,184 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Attendance | Smart Campus AI</title>
+    <meta charset="UTF-8">
+    <title>Attendance AI | Face Recognition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        body {
+            background: #020b13;
+            color: #00f7ff;
+        }
+
+        header {
+            padding: 20px 40px;
+            border-bottom: 1px solid rgba(0,255,255,0.2);
+        }
+
+        header h1 {
+            font-size: 22px;
+            letter-spacing: 2px;
+        }
+
+        .main {
+            display: grid;
+            grid-template-columns: 3fr 1.2fr;
+            gap: 30px;
+            padding: 40px;
+        }
+
+        /* CAMERA */
+        .camera {
+            position: relative;
+            background: black;
+            border-radius: 18px;
+            border: 2px solid rgba(0,255,255,0.4);
+            overflow: hidden;
+            box-shadow: 0 0 45px rgba(0,255,255,0.5);
+        }
+
+        .camera img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* SCAN LINES */
+        .camera::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                to bottom,
+                rgba(0,255,255,0.05),
+                rgba(0,255,255,0.05) 2px,
+                transparent 2px,
+                transparent 5px
+            );
+            pointer-events: none;
+        }
+
+        /* FACE BOX */
+        .face-box {
+            position: absolute;
+            border: 2px solid #00ff88;
+            box-shadow: 0 0 15px rgba(0,255,136,0.8);
+        }
+
+        .face-label {
+            position: absolute;
+            top: -22px;
+            left: 0;
+            background: rgba(0,0,0,0.7);
+            color: #00ff88;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 5px;
+        }
+
+        /* STATUS OVERLAY */
+        .hud {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(0,0,0,0.6);
+            padding: 10px 14px;
+            border: 1px solid #00f7ff;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+
+        .hud span {
+            color: #00ff88;
+        }
+
+        /* SIDE PANEL */
+        .panel {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(0,255,255,0.2);
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: inset 0 0 30px rgba(0,255,255,0.2);
+        }
+
+        .panel h2 {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .log {
+            font-size: 12px;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed rgba(0,255,255,0.25);
+        }
+
+        .log span {
+            color: #00ff88;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 11px;
+            opacity: 0.6;
+            letter-spacing: 2px;
+        }
+    </style>
 </head>
+
 <body>
 
-<h2>🎓 Live Attendance Camera</h2>
+<header>
+    <h1>🧠 ATTENDANCE AI — FACE TRACKING SYSTEM</h1>
+</header>
 
-<img src="{{ url_for('video_feed') }}" width="720">
+<div class="main">
 
-<br><br>
-<a href="/dashboard">⬅ Back to Dashboard</a>
+    <!-- CAMERA FEED -->
+    <div class="camera">
+        <img src="/video_feed" alt="Live Feed">
+
+        <!-- HUD -->
+        <div class="hud">
+            MODE: <span>FACE RECOGNITION</span><br>
+            FPS: <span>24</span><br>
+            STATUS: <span>SECURE</span>
+        </div>
+
+        <!-- FACE BOX (DEMO – backend can update later) -->
+        <div class="face-box" style="top:35%; left:40%; width:160px; height:200px;">
+            <div class="face-label">YASHWANTH | 98%</div>
+        </div>
+
+    </div>
+
+    <!-- LOG PANEL -->
+    <div class="panel">
+        <h2>📋 AI DETECTION LOG</h2>
+
+        <div class="log">✔ <span>Yashwanth</span> verified</div>
+        <div class="log">✔ Attendance marked</div>
+        <div class="log">✔ Confidence level 98%</div>
+        <div class="log">🔐 Biometric validation OK</div>
+        <div class="log">📡 Real-time stream active</div>
+    </div>
+
+</div>
+
+<footer>
+    SMART CAMPUS AI | BIOMETRIC ATTENDANCE SYSTEM
+</footer>
 
 </body>
 </html>

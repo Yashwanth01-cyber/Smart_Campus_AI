@@ -1,13 +1,31 @@
-from flask import Flask, render_template, Response, jsonify
-
-# -------------------- IMPORT CAMERA MODULES --------------------
-from attendance.camera import gen_frames
-from food_waste.camera import gen_food_frames
+from flask import Flask, render_template, Response
+import cv2
 
 app = Flask(__name__)
 
-# -------------------- BASIC PAGES --------------------
+# Cameras
+attendance_cam = cv2.VideoCapture(0)
+food_cam = cv2.VideoCapture(0)
 
+def attendance_stream():
+    while True:
+        success, frame = attendance_cam.read()
+        if not success:
+            break
+        _, buffer = cv2.imencode('.jpg', frame)
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
+
+def food_stream():
+    while True:
+        success, frame = food_cam.read()
+        if not success:
+            break
+        _, buffer = cv2.imencode('.jpg', frame)
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
+
+# Pages
 @app.route("/")
 def login():
     return render_template("login.html")
@@ -32,37 +50,16 @@ def traffic():
 def bus():
     return render_template("bus.html")
 
-# -------------------- LIVE CAMERA FEEDS --------------------
-
-@app.route("/video_feed")
-def video_feed():
-    return Response(
-        gen_frames(),
-        mimetype="multipart/x-mixed-replace; boundary=frame"
-    )
+# Video feeds
+@app.route("/attendance_feed")
+def attendance_feed():
+    return Response(attendance_stream(),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route("/food_feed")
 def food_feed():
-    return Response(
-        gen_food_frames(),
-        mimetype="multipart/x-mixed-replace; boundary=frame"
-    )
-
-# -------------------- REAL-TIME STATUS API --------------------
-
-@app.route("/status")
-def status():
-    # Dummy values for now (replace with real AI output later)
-    return jsonify({
-        "attendance_system": "Running",
-        "faces_detected": 2,
-        "food_waste_status": "Monitoring",
-        "food_waste_detected": False,
-        "traffic_status": "Normal",
-        "bus_status": "On Route"
-    })
-
-# -------------------- MAIN --------------------
+    return Response(food_stream(),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == "__main__":
     app.run(debug=True)

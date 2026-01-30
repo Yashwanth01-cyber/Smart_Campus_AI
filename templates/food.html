@@ -1,7 +1,28 @@
-<h2>🍽️ Food Waste Monitoring</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Food Waste | Smart Campus AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
 
-<img src="{{ url_for('food_feed') }}" width="720">
+<div class="sidebar">
+    <h2>Smart Campus AI</h2>
+    <a href="/dashboard">🏠 Dashboard</a>
+    <a href="/attendance">🎓 Attendance</a>
+    <a href="/food">🍽 Food Waste</a>
+    <a href="/traffic">🚦 Traffic</a>
+    <a href="/bus">🚌 Bus Tracking</a>
+</div>
 
-<p>Status: Detecting food waste...</p>
+<div class="main">
+    <h1>Food Waste Detection</h1>
 
-<a href="/dashboard">⬅ Back</a>
+    <div class="camera-box">
+        <img src="/food_feed" alt="Food Waste Camera">
+    </div>
+</div>
+
+</body>
+</html>
